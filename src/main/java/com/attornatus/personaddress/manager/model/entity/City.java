@@ -69,6 +69,7 @@ public class City {
 	}
 
 	public State getState() {
+		if (state == null) state = new State();
 		return state;
 	}
 

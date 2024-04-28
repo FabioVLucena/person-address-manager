@@ -17,7 +17,7 @@ public record AddressResponse(Long id, String location, String cep,
 		CityResponse cityRes = CityResponse.convert(city);
 		
 		return new AddressResponse(address.getId(), address.getLocation(), address.getCep(),
-				address.getNumber(), address.getMain(), personRes, cityRes);
+				address.getNumber(), address.isMain(), personRes, cityRes);
 	}
 	
 	public static List<AddressResponse> convert(List<Address> addressList) {

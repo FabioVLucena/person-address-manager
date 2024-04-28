@@ -21,7 +21,7 @@ public class Address {
 	private Person person;
 	
 	@ManyToOne
-	@JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "city_id", referencedColumnName = "id")
 	private City city;
 	
 	private String location;
@@ -36,6 +36,15 @@ public class Address {
 		super();
 	}
 
+	public Address(Person person, String location, String cep, String number, Boolean main) {
+		super();
+		this.person = person;
+		this.location = location;
+		this.cep = cep;
+		this.number = number;
+		this.main = main;
+	}
+	
 	public Address(Person person, City city, String location, String cep, String number, Boolean main) {
 		super();
 		this.person = person;
@@ -55,6 +64,7 @@ public class Address {
 	}
 
 	public Person getPerson() {
+		if (person == null) person = new Person();
 		return person;
 	}
 
@@ -63,6 +73,7 @@ public class Address {
 	}
 
 	public City getCity() {
+		if (city == null) city = new City();
 		return city;
 	}
 
@@ -94,7 +105,7 @@ public class Address {
 		this.number = number;
 	}
 
-	public Boolean getMain() {
+	public Boolean isMain() {
 		return main;
 	}
 

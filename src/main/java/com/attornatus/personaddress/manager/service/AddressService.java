@@ -51,14 +51,19 @@ public class AddressService implements IAddressService {
 
 	@Override
 	public Address createAddress(Long personId, AddressRequest req) throws NotFoundException {
+		Boolean isMain = req.main() == null ? false : req.main(); 
+		
 		Person person = this.personService.getPersonById(personId);
 		
-		City city = this.cityService.getCityById(req.cityId());
-		
-		Address address = new Address(person, city, req.location(),
-				req.cep(), req.number(), req.main());
+		Address address = new Address(person, req.location(), req.cep(),
+				req.number(), isMain);
 
-		if (req.main() == true) {
+		if (req.cityId() != null) {
+			City city = this.cityService.getCityById(req.cityId());
+			address.setCity(city);
+		}
+		
+		if (isMain == true) {
 			disableOldMainAddress(personId);
 		}
 		
@@ -67,17 +72,21 @@ public class AddressService implements IAddressService {
 
 	@Override
 	public Address updateAddress(Long addressId, AddressRequest req) throws NotFoundException {
+		Boolean isMain = req.main() == null ? false : req.main();
+		
 		Address address = getAddressById(addressId);
 		
-		City city = this.cityService.getCityById(req.cityId());
-
-		address.setCity(city);
 		address.setLocation(req.location());
 		address.setCep(req.cep());
 		address.setNumber(req.number());
-		address.setMain(req.main());
+		address.setMain(isMain);
 
-		if (req.main() == true) {
+		if (req.cityId() != null) {
+			City city = this.cityService.getCityById(req.cityId());
+			address.setCity(city);
+		}
+		
+		if (isMain == true) {
 			disableOldMainAddress(address.getPerson().getId());
 		}
 		

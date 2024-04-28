@@ -102,7 +102,7 @@ public class PersonController {
 	}
 	
 	@PostMapping("/{personId}/addresses")
-	public ResponseEntity<AddressResponse> createAddress(@PathVariable Long personId, @RequestBody AddressRequest req) throws NotFoundException {
+	public ResponseEntity<AddressResponse> createAddress(@PathVariable Long personId, @RequestBody @Valid AddressRequest req) throws NotFoundException {
 		Address address = this.addressService.createAddress(personId, req);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -116,7 +116,7 @@ public class PersonController {
 	}
 
 	@PutMapping("/{personId}/addresses/{addressId}")
-	public ResponseEntity<AddressResponse> updateAddress(@PathVariable Long addressId, @RequestBody AddressRequest req) throws NotFoundException {
+	public ResponseEntity<AddressResponse> updateAddress(@PathVariable Long addressId, @RequestBody @Valid AddressRequest req) throws NotFoundException {
 		Address address = this.addressService.updateAddress(addressId, req);
 		
 		AddressResponse res = AddressResponse.convert(address);
