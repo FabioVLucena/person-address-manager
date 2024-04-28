@@ -23,10 +23,14 @@ public class Person {
 	public Person() {
 		super();
 	}
+
+	public Person(Long id) {
+		super();
+		this.id = id;
+	}
 	
 	public Person(Long id, String fullName, LocalDate birthDate) {
 		super();
-		this.id = id;
 		this.fullName = fullName;
 		this.birthDate = birthDate;
 	}
