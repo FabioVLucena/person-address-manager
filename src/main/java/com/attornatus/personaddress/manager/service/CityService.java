@@ -27,7 +27,7 @@ public class CityService implements ICityService {
 	}
 
 	@Override
-	public List<City> findAllCitys() {
+	public List<City> findAllCities() {
 		return this.cityRepository.findAll();
 	}
 }

@@ -9,6 +9,6 @@ public interface ICityService {
 
 	City getCityById(Long cityId) throws NotFoundException;
 	
-	List<City> findAllCitys();
+	List<City> findAllCities();
 	
 }

@@ -1,0 +1,45 @@
+package com.attornatus.personaddress.manager.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.attornatus.personaddress.manager.dto.CityResponse;
+import com.attornatus.personaddress.manager.exception.NotFoundException;
+import com.attornatus.personaddress.manager.model.entity.City;
+import com.attornatus.personaddress.manager.model.service.ICityService;
+
+@RestController
+@RequestMapping("/api/v1/cities")
+public class CityController {
+	
+	private ICityService cityService;
+	
+	@Autowired
+	public CityController(ICityService cityService) {
+		this.cityService = cityService;
+	}
+
+	@GetMapping
+	public ResponseEntity<List<CityResponse>> findAllCities() {
+		List<City> cityList = this.cityService.findAllCities();
+
+		List<CityResponse> res = CityResponse.convert(cityList); 
+		
+		return ResponseEntity.ok(res);
+	}
+
+	@GetMapping("/{cityId}")
+	public ResponseEntity<CityResponse> getCityById(@PathVariable Long cityId) throws NotFoundException {
+		City city = this.cityService.getCityById(cityId);
+		
+		CityResponse res = CityResponse.convert(city);
+		
+		return ResponseEntity.ok(res);
+	}
+}
