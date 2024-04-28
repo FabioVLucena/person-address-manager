@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.attornatus.personaddress.manager.dto.AddressRequest;
+import com.attornatus.personaddress.manager.dto.AddressResponse;
 import com.attornatus.personaddress.manager.dto.PersonRequest;
 import com.attornatus.personaddress.manager.dto.PersonResponse;
 import com.attornatus.personaddress.manager.exception.NotFoundException;
+import com.attornatus.personaddress.manager.model.entity.Address;
 import com.attornatus.personaddress.manager.model.entity.Person;
+import com.attornatus.personaddress.manager.model.service.IAddressService;
 import com.attornatus.personaddress.manager.model.service.IPersonService;
 
 import jakarta.validation.Valid;
@@ -29,9 +33,12 @@ public class PersonController {
 
 	private IPersonService personService;
 	
+	private IAddressService addressService;
+	
 	@Autowired
-	public PersonController(IPersonService personService) {
+	public PersonController(IPersonService personService, IAddressService addressService) {
 		this.personService = personService;
+		this.addressService = addressService;
 	}
 	
 	@GetMapping
@@ -67,7 +74,7 @@ public class PersonController {
 		Person person = this.personService.createPerson(req);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/api/v1/persons/{id}")
+				.path("/api/v1/persons/{personId}")
 				.buildAndExpand(person.getId())
 				.toUri();
 		
@@ -81,6 +88,56 @@ public class PersonController {
 		Person person = this.personService.updatePerson(personId, req);
 		
 		PersonResponse res = PersonResponse.convert(person);
+		
+		return ResponseEntity.ok(res);
+	}
+	
+	@GetMapping("/{personId}/addresses")
+	public ResponseEntity<List<AddressResponse>> findAddressesByPersonId(@PathVariable Long personId) {
+		List<Address> addressList = this.addressService.findAddressesByPersonId(personId);
+		
+		List<AddressResponse> res = AddressResponse.convert(addressList);
+		
+		return ResponseEntity.ok(res);
+	}
+	
+	@PostMapping("/{personId}/addresses")
+	public ResponseEntity<AddressResponse> createAddress(@PathVariable Long personId, @RequestBody AddressRequest req) throws NotFoundException {
+		Address address = this.addressService.createAddress(personId, req);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/api/v1/persons/{personId}/addresses/{addressId}")
+				.buildAndExpand(address.getPerson().getId(), address.getId())
+				.toUri();
+		
+		AddressResponse res = AddressResponse.convert(address);
+		
+		return ResponseEntity.created(uri).body(res);
+	}
+
+	@PutMapping("/{personId}/addresses/{addressId}")
+	public ResponseEntity<AddressResponse> updateAddress(@PathVariable Long addressId, @RequestBody AddressRequest req) throws NotFoundException {
+		Address address = this.addressService.updateAddress(addressId, req);
+		
+		AddressResponse res = AddressResponse.convert(address);
+		
+		return ResponseEntity.ok(res);
+	}
+	
+	@PutMapping("/{personId}/addresses/{addressId}/main")
+	public ResponseEntity<AddressResponse> setMainAddress(@PathVariable Long addressId) throws NotFoundException {
+		Address address = this.addressService.setMainAddress(addressId);
+		
+		AddressResponse res = AddressResponse.convert(address);
+		
+		return ResponseEntity.ok(res);
+	}
+	
+	@GetMapping("/{personId}/addresses/main")
+	public ResponseEntity<AddressResponse> getMainAddressByPersonId(@PathVariable Long personId) throws NotFoundException {
+		Address address = this.addressService.getMainAddressByPersonId(personId);
+		
+		AddressResponse res = AddressResponse.convert(address);
 		
 		return ResponseEntity.ok(res);
 	}
