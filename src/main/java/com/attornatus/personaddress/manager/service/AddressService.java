@@ -78,6 +78,7 @@ public class AddressService implements IAddressService {
 		address.setMain(req.main());
 
 		if (req.main() == true) {
+			disableOldMainAddress(address.getPerson().getId());
 		}
 		
 		return this.addressRepository.save(address);
@@ -95,7 +96,7 @@ public class AddressService implements IAddressService {
 
 	/*
 	 * Found the main address
-	 * and set main with false
+	 * and set main to false
 	 */
 	@Override
 	public void disableOldMainAddress(Long personId) {
