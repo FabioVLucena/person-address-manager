@@ -31,6 +31,7 @@ public class Person {
 	
 	public Person(Long id, String fullName, LocalDate birthDate) {
 		super();
+		this.id = id;
 		this.fullName = fullName;
 		this.birthDate = birthDate;
 	}
