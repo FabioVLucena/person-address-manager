@@ -1,5 +1,6 @@
 package com.attornatus.personaddress.manager.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.attornatus.personaddress.manager.dto.PersonRequest;
 import com.attornatus.personaddress.manager.dto.PersonResponse;
@@ -64,9 +66,14 @@ public class PersonController {
 	public ResponseEntity<PersonResponse> createPerson(@RequestBody @Valid PersonRequest req) {
 		Person person = this.personService.createPerson(req);
 		
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/api/v1/persons/{id}")
+				.buildAndExpand(person.getId())
+				.toUri();
+		
 		PersonResponse res = PersonResponse.convert(person);
 		
-		return ResponseEntity.ok(res);
+		return ResponseEntity.created(uri).body(res);
 	}
 	
 	@PutMapping("/{personId}")
