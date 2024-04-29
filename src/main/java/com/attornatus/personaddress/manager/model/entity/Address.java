@@ -55,6 +55,17 @@ public class Address {
 		this.main = main;
 	}
 
+	public Address(Long id, Person person, City city, String location, String cep, String number, Boolean main) {
+		super();
+		this.id = id;
+		this.person = person;
+		this.city = city;
+		this.location = location;
+		this.cep = cep;
+		this.number = number;
+		this.main = main;
+	}
+
 	public Long getId() {
 		return id;
 	}
