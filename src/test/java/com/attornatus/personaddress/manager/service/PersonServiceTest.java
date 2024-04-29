@@ -3,9 +3,9 @@ package com.attornatus.personaddress.manager.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -13,38 +13,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.attornatus.personaddress.manager.dto.PersonRequest;
 import com.attornatus.personaddress.manager.exception.NotFoundException;
 import com.attornatus.personaddress.manager.model.entity.Person;
 import com.attornatus.personaddress.manager.repository.PersonRepository;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
 
-    private PersonService personService;
-    private PersonRepository personRepository;
+	@Mock
+	private PersonRepository personRepository;
 
-    @BeforeEach
-    public void setUp() {
-        personRepository = mock(PersonRepository.class);
-        personService = new PersonService(personRepository);
-    }
+	@InjectMocks
+	private PersonService personService;
 
     @Test
     public void shouldntGetPersonById() {
     	Long personId = 1L;
     	
-    	try {
-			this.personService.getPersonById(personId);
-			
-			fail("There shouldn't be a person");
-		} catch (Exception e) {
-			assertEquals(NotFoundException.class, e.getClass());
-		}
+    	when(personRepository.findById(personId)).thenReturn(Optional.empty());
+    	
+    	assertThrows(NotFoundException.class, () -> personService.getPersonById(personId));
     }
     
     @Test
@@ -53,8 +48,7 @@ public class PersonServiceTest {
     	
         Person expectedPerson = new Person(personId, "Uncle bob", LocalDate.of(2000, 5, 15));
 
-        when(personRepository.findById(personId))
-        	.thenReturn(Optional.of(expectedPerson));
+        when(personRepository.findById(personId)).thenReturn(Optional.of(expectedPerson));
 
         try {
             Person person = personService.getPersonById(personId);
@@ -105,13 +99,9 @@ public class PersonServiceTest {
     	
         PersonRequest req = new PersonRequest("Fabio Topson", LocalDate.of(1993, 5, 22));
 
-        try {
-            personService.updatePerson(personId, req);
-			
-            fail("Shouldn't update someone who doesn't exist");
-		} catch (Exception e) {
-			assertEquals(NotFoundException.class, e.getClass());
-		}
+        when(personRepository.findById(personId)).thenReturn(Optional.empty());
+        
+        assertThrows(NotFoundException.class, () -> personService.updatePerson(personId, req));
     }
     
     @Test
