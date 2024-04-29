@@ -57,18 +57,18 @@ INSERT INTO city (id, name, acronym, state_id) VALUES
 (27, 'Palmas', 'PM', 27);
 
 INSERT INTO person (id, full_name, birth_date) VALUES 
-(1, 'Marley', '2001-06-13'),
-(2, 'Carl', '2005-02-07'),
-(3, 'Astolf', '2010-10-19'),
-(4, 'Cristhian', '1997-03-01');
+(1001, 'Marley', '2001-06-13'),
+(1002, 'Carl', '2005-02-07'),
+(1003, 'Astolf', '2010-10-19'),
+(1004, 'Cristhian', '1997-03-01');
 
 INSERT INTO address (id, person_id, city_id, location, cep, number, main) VALUES
-(1, 1, 1, 'Colorado Avenue', '899975', '068', true),
-(2, 1, 1, 'Richardson Avenue', '82385', '128', false),
-(3, 1, 2, 'Pacpi Avenue', '25675', '898', false),               
-(4, 2, 7, 'Boemia Avenue', '899975', '038', false),
-(5, 2, 21, 'Proste Avenue', '82385', '128', true),
-(6, 3, 7, 'Help Avenue', '25675', '898', true),
-(7, 3, 8, 'Sad Avenue', '899975', '0088', false),
-(8, 3, 10, 'Wumpalumpa Avenue', '82385', '128', false),
-(9, 4, 27, 'Gamescon Avenue', '25675', '898', true);
+(1001, 1001, 1, 'Colorado Avenue', '899975', '068', true),
+(1002, 1001, 1, 'Richardson Avenue', '82385', '128', false),
+(1003, 1001, 2, 'Pacpi Avenue', '25675', '898', false),               
+(1004, 1002, 7, 'Boemia Avenue', '899975', '038', false),
+(1005, 1002, 21, 'Proste Avenue', '82385', '128', true),
+(1006, 1003, 7, 'Help Avenue', '25675', '898', true),
+(1007, 1003, 8, 'Sad Avenue', '899975', '0088', false),
+(1008, 1003, 10, 'Wumpalumpa Avenue', '82385', '128', false),
+(1009, 1004, 27, 'Gamescon Avenue', '25675', '898', true);
