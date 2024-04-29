@@ -1,7 +1,19 @@
 services:
+
   postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
+      
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
