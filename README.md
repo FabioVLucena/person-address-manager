@@ -6,8 +6,8 @@ O Person Address Manager é um desafio técnico proposto por [Attus Procuradoria
 
 ## Características:
 
-* Gerencialmento de pessoas: Criar, editar e consultar uma ou mais pessoas;
-* Gerencialmento de endereços: Criar, editar e consultar um ou mais endereços de uma pessoa;
+* Gerenciamento de pessoas: Criar, editar e consultar uma ou mais pessoas;
+* Gerenciamento de endereços: Criar, editar e consultar um ou mais endereços de uma pessoa;
 
 ## Tecnologias utilizadas:
 [![My Skills](https://skillicons.dev/icons?i=java,spring,hibernate,postgres,docker)](https://skillicons.dev)
