@@ -14,8 +14,12 @@ import com.attornatus.personaddress.manager.exception.NotFoundException;
 import com.attornatus.personaddress.manager.model.entity.City;
 import com.attornatus.personaddress.manager.model.service.ICityService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/cities")
+@Tag(name = "City Search", description = "Endpoints for city search")
 public class CityController {
 	
 	private ICityService cityService;
@@ -25,6 +29,7 @@ public class CityController {
 		this.cityService = cityService;
 	}
 
+	@Operation(summary = "Get the list of all cities")
 	@GetMapping
 	public ResponseEntity<List<CityResponse>> findAllCities() {
 		List<City> cityList = this.cityService.findAllCities();
@@ -34,6 +39,7 @@ public class CityController {
 		return ResponseEntity.ok(res);
 	}
 
+	@Operation(summary = "Get a city by its id")
 	@GetMapping("/{cityId}")
 	public ResponseEntity<CityResponse> getCityById(@PathVariable Long cityId) throws NotFoundException {
 		City city = this.cityService.getCityById(cityId);
